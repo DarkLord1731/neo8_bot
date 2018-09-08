@@ -8,9 +8,10 @@ from tg_bot import dispatcher
 def translate(bot: Bot, update: Update):
     if update.effective_message.reply_to_message:
         msg = update.effective_message.reply_to_message
-		
         args = update.effective_message.text.split(None, 1)
-        language = args[1]
+        language = "en"
+        if len(args) > 1:
+            language = args[1]
 		
         translator = Translator()
         translation = translator.translate(msg.text, language)
