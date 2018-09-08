@@ -127,9 +127,9 @@ def pin(bot: Bot, update: Update, args: List[str]) -> str:
 
     prev_message = update.effective_message.reply_to_message
 
-    is_silent = True
+    is_silent = False
     if len(args) >= 1:
-        is_silent = not (args[0].lower() == 'notify' or args[0].lower() == 'loud' or args[0].lower() == 'violent')
+        is_silent = args[0].lower() == 'silent'
 
     if prev_message and is_group:
         try:
@@ -210,7 +210,7 @@ __help__ = """
  - /adminlist: list of admins in the chat
 
 *Admin only:*
- - /pin: silently pins the message replied to - add 'loud' or 'notify' to give notifs to users.
+ - /pin: pins the message replied to and notifies all the users - add 'silent' to avoid notifying users.
  - /unpin: unpins the currently pinned message
  - /invitelink: gets invitelink
  - /promote: promotes the user replied to
