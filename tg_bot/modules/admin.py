@@ -32,8 +32,12 @@ def promote(bot: Bot, update: Update, args: List[str]) -> str:
         return ""
 
     user_member = chat.get_member(user_id)
-    if user_member.status == 'administrator' or user_member.status == 'creator':
-        message.reply_text("How am I meant to promote someone that's already an admin?")
+    if user_member.status == 'creator':
+        message.reply_text("{} is the CREATOR of this chat! He is the main admin!".format(user_member.user.first_name))
+        return ""
+	
+    if user_member.status == 'administrator':
+        message.reply_text("{} is already an admin!".format(user_member.user.first_name))
         return ""
 
     if user_id == bot.id:
@@ -53,7 +57,7 @@ def promote(bot: Bot, update: Update, args: List[str]) -> str:
                           can_pin_messages=bot_member.can_pin_messages,
                           can_promote_members=bot_member.can_promote_members)
 
-    message.reply_text("Successfully promoted!")
+    message.reply_text("Successfully promoted!\n{} is now an admin".format(user_member.user.first_name))
     return "<b>{}:</b>" \
            "\n#PROMOTED" \
            "\n<b>Admin:</b> {}" \
@@ -79,7 +83,7 @@ def demote(bot: Bot, update: Update, args: List[str]) -> str:
 
     user_member = chat.get_member(user_id)
     if user_member.status == 'creator':
-        message.reply_text("This person CREATED the chat, how would I demote them?")
+        message.reply_text("This person CREATED the chat and I can't demote him!")
         return ""
 
     if not user_member.status == 'administrator':
@@ -100,7 +104,7 @@ def demote(bot: Bot, update: Update, args: List[str]) -> str:
                               can_restrict_members=False,
                               can_pin_messages=False,
                               can_promote_members=False)
-        message.reply_text("Successfully demoted!")
+        message.reply_text("Successfully demoted {}!".format(user_member.user.first_name))
         return "<b>{}:</b>" \
                "\n#DEMOTED" \
                "\n<b>Admin:</b> {}" \
