@@ -30,8 +30,11 @@ def sudopromote(bot: Bot, update: Update, args: List[str]):
         message.reply_text("The user is already a sudo user.")
         return ""
     
-        SUDO_USERS.append(user_id)
-        message.reply_text("Succefully added to SUDO user list!")
+    with open("sudo_users.txt","a") as file:
+        file.write(str(user_id) + "\n")
+    
+    SUDO_USERS.append(user_id)
+    message.reply_text("Succefully added to SUDO user list!")
         
     return ""
 
@@ -52,7 +55,14 @@ def sudodemote(bot: Bot, update: Update, args: List[str]):
     if user_id not in SUDO_USERS:
         message.reply_text("{} is not a sudo user".format(user_id))
         return ""
-    
+
+    users = [line.rstrip('\n') for line in open("sudo_users.txt")]
+
+    with open("sudo_users.txt","w") as file:
+        for user in users:
+            if not int(user) == user_id:
+                file.write(str(user) + "\n")
+
     SUDO_USERS.remove(user_id)
     message.reply_text("Succefully removed from SUDO user list!")
     
